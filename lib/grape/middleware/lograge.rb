@@ -3,8 +3,6 @@ require 'lograge'
 require 'lograge/formatters/rails_logger'
 
 class Grape::Middleware::Lograge < Grape::Middleware::Globals
-  BACKSLASH = '/'.freeze
-
   STATUS_CODE_TO_SYMBOL = Rack::Utils::SYMBOL_TO_STATUS_CODE.each_with_object({}) do |(symbol, status_code), hash|
     hash[status_code] = symbol
   end
@@ -122,7 +120,7 @@ class Grape::Middleware::Lograge < Grape::Middleware::Globals
   end
 
   def action_name
-    endpoint.options[:path].map { |path| path.to_s.sub(BACKSLASH, '') }.join(BACKSLASH)
+    endpoint.options[:path].map { |path| path.to_s.sub('/', '') }.join('/')
   end
 end
 

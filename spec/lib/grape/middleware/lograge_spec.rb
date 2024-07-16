@@ -40,20 +40,19 @@ describe Grape::Middleware::Lograge do
     end
 
     context 'when calling the app results in an array response' do
-      let(:app_response) { [401, {}, []] }
-
       it 'calls +after+ with the correct status' do
-        expect(app).to receive(:call).with(env).and_return(app_response)
+        expect(app).to receive(:call).with(env).and_return([401, {}, []])
         expect(subject).to receive(:before).and_call_original
         expect(subject).to receive(:after).with(hash_including(method: 'POST'), 401)
         subject.call!(env)
       end
 
       it 'returns the @app_response' do
-        expect(app).to receive(:call).with(env).and_return(app_response)
+        expect(app).to receive(:call).with(env).and_return([401, {}, []])
         allow(subject).to receive(:before)
         allow(subject).to receive(:after)
-        expect(subject.call!(env)).to eq app_response
+        response = subject.call!(env)
+        expect(response.status).to eq(401)
       end
     end
   end

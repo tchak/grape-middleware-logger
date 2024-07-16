@@ -3,9 +3,11 @@ class Grape::Middleware::Lograge::Railtie < Rails::Railtie
     if defined?(ActiveSupport::ParameterFilter)
       # Rails 6
       Grape::Middleware::Lograge.filter = ActiveSupport::ParameterFilter.new Rails.application.config.filter_parameters
-    else
+    elsif defined?(ActionDispatch::Http::ParameterFilter)
       # Rails 5
       Grape::Middleware::Lograge.filter = ActionDispatch::Http::ParameterFilter.new Rails.application.config.filter_parameters
+    else
+      raise StandardError, 'Unsupported Rails version, no paramater filter found'
     end
 
     ::Lograge::LogSubscribers::ActionController.attach_to :grape

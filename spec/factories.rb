@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   class ExpectedEnv < Hash
     attr_accessor :grape_request, :params, :post_params, :grape_endpoint
   end
@@ -68,7 +68,7 @@ FactoryGirl.define do
   factory :namespaced_endpoint, parent: :grape_endpoint do
     initialize_with do
       new(settings, options).tap do |me|
-        me.namespace_stackable(:namespace, Grape::Namespace.new('/admin', {}))
+        me.namespace_stackable(:namespace, Grape::Namespace.new('/admin'))
       end
     end
   end
